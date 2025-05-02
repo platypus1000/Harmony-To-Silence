@@ -135,20 +135,32 @@ const Boombox: React.FC<Props> = ({
   const onEnded = useCallback(() => { if (isPlaying) { changeTrack(1); } else { stop(); } }, [isPlaying, changeTrack, stop]);
 
   // --- Effects ---
-  // Spin Animation (Keep this for gradual slowdown)
+  // Spin Animation (Corrected: No Reset on Stop/Pause)
   useEffect(() => {
     let frameId: number;
     const animate = () => {
       let newSpeed = spinSpeed;
       if (isPlaying && spinSpeed < 3) newSpeed = Math.min(spinSpeed + 0.2, 3);
       else if (!isPlaying && spinSpeed > 0) newSpeed = Math.max(spinSpeed - 0.1, 0);
+
       if (newSpeed !== spinSpeed) setSpinSpeed(newSpeed);
-      if (newSpeed > 0) { setRotation(prev => (prev + newSpeed) % 360); frameId = requestAnimationFrame(animate); }
-      else if (!isPlaying) { setRotation(0); }
+
+      // ONLY update rotation and continue if speed is positive
+      if (newSpeed > 0) {
+          setRotation(prev => (prev + newSpeed) % 360);
+          frameId = requestAnimationFrame(animate);
+      }
+      // --- The else if block is now gone ---
     };
-    if (isPlaying || spinSpeed > 0) { frameId = requestAnimationFrame(animate); }
+
+    // Start/continue animation if playing OR still spinning down
+    if (isPlaying || spinSpeed > 0) {
+        frameId = requestAnimationFrame(animate);
+    }
+
+    // Cleanup
     return () => cancelAnimationFrame(frameId);
-   }, [isPlaying, spinSpeed]);
+   }, [isPlaying, spinSpeed]); // Dependencies remain the same
 
   // CD Insert/Eject Logic
   useEffect(() => {
