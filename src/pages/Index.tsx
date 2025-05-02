@@ -299,7 +299,7 @@ export default function Index() {
         </div> {/* End Main Flex Container */}
 
         {/* Instructions - Added small top margin */}
-        <p className="mt-4 text-2xl md:text-3xl text-gray-200 text-center h-9 px-4 font-medium leading-tight"> {/* Added mt-4 */}
+        <p className="mt-4 text-2xl md:text-3xl text-gray-200 text-center h-15 px-4 font-medium leading-tight"> {/* Added mt-4 */}
             {getInstructionText()}
         </p>
       </div>
