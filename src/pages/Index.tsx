@@ -197,9 +197,9 @@ export default function Index() {
           case 'playing':
               return (
                   <>
-                      Click ⏵ to start/pause the music.
+                      Use the CD player buttons to control the music
                       <br />
-                      Use the CD player controls or drag the disc back.
+                      or drag the disc back.
                   </>
               );
           // Only check drag/ready states if not in a higher priority view state
